@@ -18,32 +18,34 @@
 //= require underscore
 //
 //= require_tree ./models
+//= require_tree ./views
 //= require_tree ../templates
 //
 //= require_tree .
 
-_.extend(PT, {
-  initialize:   function () {
-    PT.Photo.fetchByUserId(CURRENT_USER_ID, function () {
-      PT.showPhotosIndex();
-    });
-  },
+PT.initialize = function(){
+	PT.showPhotosIndex();
+};
 
-  showPhotoDetail: function (photo) {
-    var content = $("#content");
+PT.showPhotosIndex = function(){
+	PT.Photo.fetchByUserId(CURRENT_USER_ID, function(photos){
+		$("#content").html("")
+		var list = new PT.PhotosListView();
+		$("#content").append(list.render().$el);
+		var form = new PT.PhotoFormView();
+		$("#content").append(form.render().$el);
+	});
+}
 
-    var photoDetailView = new PT.PhotoDetailView(photo);
-    content.html(photoDetailView.render().$el);
-  },
+PT.showPhotoDetail = function(photo){
+	$("#content").html("")
+	var detail = new PT.PhotoDetailView(photo);
+	$("#content").append(detail.render().$el);
+}
 
-  showPhotosIndex: function () {
-    var content = $("#content");
-    content.empty();
 
-    var photosListView = new PT.PhotosListView();
-    content.append(photosListView.render().$el);
-
-    var photoFormView = new PT.PhotoFormView();
-    content.append(photoFormView.render().$el);
-  },
-});
+// $(function(){
+// 	p new PT.Photo({
+// 		url: "http://imgur.com/gallery/ZJccCgs"
+// 	});
+// })
