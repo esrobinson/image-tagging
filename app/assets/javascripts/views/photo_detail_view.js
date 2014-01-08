@@ -13,7 +13,6 @@
 
 		render: function(){
 			this.$el.html('');
-			console.log(this);
 			$back = $('<button>').attr('id', 'back').text('Back');
 			$header = $('<h1>').text(this.photo.get('title'));
 			$img = $('<img>').attr('src', this.photo.get('url'));
@@ -22,15 +21,8 @@
 		},
 
 		popTagSelectView: function(event){
-			console.log('test?');
-			var position = $('img').position()
-			var top = position.top + event.offsetY - 50;
-			var left = position.left + event.offsetX - 50;
-
-			$tag = $('<div>');
-			$tag.addClass('photo-tag').css('position', 'absolute');
-			$tag.css({left: left, top: top});
-			this.$el.append($tag);
+			tag = new PT.TagSelectView(this.photo, event);
+			this.$el.append(tag.render().$el);
 		}
 	})
 
